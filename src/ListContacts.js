@@ -6,7 +6,7 @@ class ListContacts extends React.Component {
         return <ol className="contact-list">
             {this.props.contacts.map((item, index)=>
             <li key={index} className="contact-list-item">
-                <div className="contact-avater" style={{backgroundImage:`url(${item.avaterURL})`}}></div>
+                <div className="contact-avatar" style={{backgroundImage:`url(${item.avatarURL})`}}></div>
                 <div className="contact-details">
                     <p>{item.name}</p>
                     <p>{item.email}</p>
