@@ -1,43 +1,54 @@
 import React, { Component } from 'react';
 import ListContacts from './ListContacts';
-
+import * as ContactsApi from './utils/ContactsAPI'
+import CreateContact  from './CreateContact'
+import {Route } from "react-router-dom";
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      contacts: [
-        {
-          "id": "ryan",
-          "name": "Ryan Florence",
-          "email": "ryan@reacttraining.com",
-          "avatarURL": "http://localhost:5001/ryan.jpg"
-        },
-        {
-          "id": "michael",
-          "name": "Michael Jackson",
-          "email": "michael@reacttraining.com",
-          "avatarURL": "http://localhost:5001/michael.jpg"
-        },
-        {
-          "id": "tyler",
-          "name": "Tyler McGinnis",
-          "email": "tyler@reacttraining.com",
-          "avatarURL": "http://localhost:5001/tyler.jpg"
-        }
-      ]
+      contacts: []
     }
   
-this.removeContact = (contact) => {
-    this.setState((state)=>({
-      contacts: state.contacts.filter((c) => c.id !== contact.id)
-    }))
-  }
+this.removeContact = this.removeContact.bind(this);
+this.createContact = this.createContact.bind(this);
+}
+removeContact (contact)  {
+  this.setState((state)=>({
+    contacts: state.contacts.filter((c) => c.id !== contact.id)
+  }))
+  ContactsApi.remove(contact);
+}
+createContact (contact)  {
+  ContactsApi.create(contact).then((contact)=>
+  this.setState(state=>({
+    contacts: state.contacts.concat([contact])
+  })))
+
+}
+componentDidMount(){
+  ContactsApi.getAll().then((contacts)=>
+  this.setState({contacts: contacts}))
 }
   render() {
     return (
       <div>
-        <ListContacts onDeleteContact={this.removeContact} contacts={this.state.contacts}/>
+         <Route exact path="/">
+             <ListContacts onDeleteContact={this.removeContact} contacts={this.state.contacts}/>
+         </Route>
+ 
+         <Route path="/create" render={({history})=>(
+        <CreateContact onCreateContact={(contact)=>{
+          this.createContact(contact)
+          history.push('/')
+        }} />
+           )}
+       
+        />
+
+
+
       </div>
     )
   }

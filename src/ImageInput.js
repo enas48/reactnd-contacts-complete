@@ -41,17 +41,23 @@ const resizeImage = (imageURL, canvas, maxHeight) =>
  * submitting them to the server as data URLs. Also, shows a preview of the image.
  */
 class ImageInput extends React.Component {
-  static propTypes = {
+  static PropTypes = {
     className: PropTypes.string,
     name: PropTypes.string,
     maxHeight: PropTypes.number
   }
 
-  state = {
-    value: ''
+  constructor(props){
+    super(props);
+    this.state = {
+      value: ''
+    }
+    this.handleFileChange =this.handleFileChange.bind(this);
+    this.handleFormReset =this.handleFormReset.bind(this);
   }
 
-  handleFileChange = (event) => {
+
+  handleFileChange (event) {
     const file = event.target.files[0]
 
     if (file && file.type.match(/^image\//)) {
@@ -65,7 +71,7 @@ class ImageInput extends React.Component {
     }
   }
 
-  handleFormReset = () => {
+  handleFormReset (){
     this.setState({ value: '' })
   }
 

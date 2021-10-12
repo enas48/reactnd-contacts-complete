@@ -72,8 +72,15 @@ body, .app {
   font-size: inherit;
   border: none;
   outline: 0;
+  cursor: pointer;
 }
 
+.create-contact-details button:active,
+.create-contact-details button:hover{
+
+  background: rgb(69, 181, 255);
+
+}
 /* ListContacts */
 
 .list-contacts {
